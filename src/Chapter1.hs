@@ -493,7 +493,7 @@ Implement a function that returns the last digit of a given number.
 -}
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
 lastDigit :: Int -> Int
-lastDigit n = mod n 10
+lastDigit n = mod (if n < 0 then (-n) else n) 10
 
 
 {- |
@@ -650,9 +650,9 @@ sumLast2 :: Int -> Int
 sumLast2 n = firstLastDigit n + secondLastDigit n
   where
     firstLastDigit :: Int -> Int -- already defined as lastDigit, but I wanted to try this out
-    firstLastDigit n1 = mod n1 10
+    firstLastDigit n1 = mod (if n1 < 0 then (-n1) else n1) 10
     secondLastDigit :: Int -> Int
-    secondLastDigit n2 = div (mod n2 100) 10
+    secondLastDigit n2 = div (mod (if n2 < 0 then (-n2) else n2) 100) 10
 
 
 
