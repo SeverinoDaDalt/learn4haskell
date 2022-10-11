@@ -676,6 +676,7 @@ aren't ready for this boss yet!
 
 firstDigit :: Int -> Int
 firstDigit n
+  | n < 0 = firstDigit (-n)
   | div n 10 == 0 = n
   | otherwise = firstDigit (div n 10)
 

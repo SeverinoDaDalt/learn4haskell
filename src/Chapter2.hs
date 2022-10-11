@@ -528,7 +528,9 @@ True
 >>> isThird42 [42, 42, 0, 42]
 False
 -}
-isThird42 = error "isThird42: Not implemented!"
+isThird42 :: [Int] -> Bool
+isThird42 (_ : _ : 42 : _) = True
+isThird42 _ = False
 
 
 {- |
@@ -633,7 +635,8 @@ Implement a function that duplicates each element of the list
 
 -}
 duplicate :: [a] -> [a]
-duplicate = error "duplicate: Not implemented!"
+duplicate [] = []
+duplicate (x:xs) = [x, x] ++ duplicate xs -- si puó ottimizzare con foldr, ma penso mi spigheranno questo nel futuro 
 
 
 {- |
@@ -648,7 +651,10 @@ Write a function that takes elements of a list only in even positions.
 >>> takeEven [2, 1, 3, 5, 4]
 [2,3,4]
 -}
-takeEven = error "takeEven: Not implemented!"
+takeEven :: [a] -> [a]
+takeEven [] = []
+takeEven [x] = [x]
+takeEven (x:_:xs) = x : takeEven xs
 
 {- |
 =🛡= Higher-order functions
@@ -754,8 +760,36 @@ value of the element itself
 
 🕯 HINT: Use combination of 'map' and 'replicate'
 -}
+
+--Quello che capisco che é la versione suggerita:
+{-
 smartReplicate :: [Int] -> [Int]
-smartReplicate l = error "smartReplicate: Not implemented!"
+smartReplicate l = concat (map (\n -> replicate n n) l) 
+-}
+
+--Il correttore consiglia:
+{-
+smartReplicate :: [Int] -> [Int]
+smartReplicate = concatMap (\n -> replicate n n)
+-}
+
+--La mia versione:
+{-
+smartReplicate :: [Int] -> [Int]
+smartReplicate [] = []
+smartReplicate (x:xs) = (replicate x x) ++ (smartReplicate xs)
+-}
+
+--Il computer raccomanda usare foldr:
+{-
+smartReplicate :: [Int] -> [Int]
+smartReplicate l = foldr (\x old -> replicate x x ++ old) [] l
+-}
+
+--Per di piú, raccomanda comprimere la formula ed ovviare la variabile lista (Spiegato piú avanti):
+smartReplicate :: [Int] -> [Int]
+smartReplicate = foldr (\x old -> replicate x x ++ old) []
+
 
 {- |
 =⚔️= Task 9
@@ -768,7 +802,8 @@ the list with only those lists that contain a passed element.
 
 🕯 HINT: Use the 'elem' function to check whether an element belongs to a list
 -}
-contains = error "contains: Not implemented!"
+contains :: Int -> [[Int]] -> [[Int]]
+contains n = filter (elem n)
 
 
 {- |
@@ -808,13 +843,15 @@ Let's now try to eta-reduce some of the functions and ensure that we
 mastered the skill of eta-reducing.
 -}
 divideTenBy :: Int -> Int
-divideTenBy x = div 10 x
+divideTenBy = div 10
 
 -- TODO: type ;)
-listElementsLessThan x l = filter (< x) l
+listElementsLessThan :: Int -> [Int] -> [Int] 
+listElementsLessThan x = filter (< x)
 
 -- Can you eta-reduce this one???
-pairMul xs ys = zipWith (*) xs ys
+pairMul :: [Int] -> [Int] -> [Int]
+pairMul = zipWith (*)
 
 {- |
 =🛡= Lazy evaluation
@@ -869,7 +906,12 @@ list.
 
 🕯 HINT: Use the 'cycle' function
 -}
-rotate = error "rotate: Not implemented!"
+rotate :: Int -> [a] -> [a]
+rotate n list
+  | n < 0 = []
+  | null list = []
+  | otherwise = drop n (take (n + length list) (cycle list))
+
 
 {- |
 =💣= Task 12*
@@ -885,7 +927,12 @@ and reverses it.
   function, but in this task, you need to implement it manually. No
   cheating!
 -}
-rewind = error "rewind: Not Implemented!"
+rewind :: [a] -> [a]
+rewind = go []
+  where
+    go :: [a] -> [a] -> [a]
+    go final_l [] = final_l
+    go final_l (x:xs) = go (x : final_l) xs
 
 
 {-
