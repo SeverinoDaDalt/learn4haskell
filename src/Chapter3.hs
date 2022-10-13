@@ -344,6 +344,11 @@ of a book, but you are not limited only by the book properties we described.
 Create your own book type of your dreams!
 -}
 
+data Book = Book
+  { bookName  :: String
+  , bookPages :: Int  
+  } deriving (Show)
+
 {- |
 =⚔️= Task 2
 
@@ -375,6 +380,24 @@ after the fight. The battle has the following possible outcomes:
 ♫ NOTE: In this task, you need to implement only a single round of the fight.
 
 -}
+
+data Knight = Knight
+  { knightHealth  :: Int
+  , knightAttack  :: Int
+  , knightGold    :: Int
+  }
+
+data Monster = Monster
+  { monsterHealth  :: Int
+  , monsterAttack  :: Int
+  , monsterGold    :: Int
+  }
+
+fight :: Monster -> Knight -> Int
+fight m k
+  | monsterHealth m <= knightAttack k = monsterGold m + knightGold k
+  | knightHealth k <= monsterAttack m = -1
+  | otherwise = knightGold k
 
 {- |
 =🛡= Sum types
@@ -461,6 +484,21 @@ and provide more flexibility when working with data types.
 Create a simple enumeration for the meal types (e.g. breakfast). The one who
 comes up with the most number of names wins the challenge. Use your creativity!
 -}
+
+{-}
+data Breakfast = Breakfast
+  { breakfastDish   :: [String]
+  , breakfastDrink  :: String
+  }
+-}
+
+data Meal 
+  = Breakfast { breakfastDish   :: [String]
+              , breakfastDrink  :: String
+              }
+  | Lunch     [String]
+  | Dinner    [String]
+
 
 {- |
 =⚔️= Task 4
